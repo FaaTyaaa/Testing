@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Click the Ball Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+        #gameContainer {
+            position: relative;
+            width: 600px;
+            height: 400px;
+            background-color: #fff;
+            border: 2px solid #333;
+        }
+        #ball {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background-color: red;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        #score {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 20px;
+            color: #333;
+        }
+        #gameOver {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 30px;
+            color: red;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="gameContainer">
+        <div id="score">Score: 0</div>
+        <div id="gameOver">Game Over!</div>
+        <div id="ball"></div>
+    </div>
+
+    <script>
+        const ball = document.getElementById("ball");
+        const gameContainer = document.getElementById("gameContainer");
+        const scoreDisplay = document.getElementById("score");
+        const gameOverText = document.getElementById("gameOver");
+
+        let score = 0;
+        let timeLeft = 30;  // Waktu permainan dalam detik
+        let gameInterval;
+
+        // Fungsi untuk memindahkan bola ke posisi acak
+        function moveBall() {
+            const x = Math.random() * (gameContainer.clientWidth - ball.clientWidth);
+            const y = Math.random() * (gameContainer.clientHeight - ball.clientHeight);
+            ball.style.left = x + "px";
+            ball.style.top = y + "px";
+        }
+
+        // Fungsi untuk menambah skor saat bola diklik
+        ball.addEventListener("click", () => {
+            score++;
+            scoreDisplay.textContent = `Score: ${score}`;
+            moveBall();
+        });
+
+        // Fungsi untuk memulai permainan
+        function startGame() {
+            score = 0;
+            scoreDisplay.textContent = `Score: ${score}`;
+            gameOverText.style.display = "none";
+            ball.style.display = "block";
+            gameInterval = setInterval(() => {
+                timeLeft--;
+                if (timeLeft <= 0) {
+                    endGame();
+                }
+            }, 1000);
+            moveBall();
+        }
+
+        // Fungsi untuk mengakhiri permainan
+        function endGame() {
+            clearInterval(gameInterval);
+            gameOverText.style.display = "block";
+            ball.style.display = "none";
+        }
+
+        // Mulai game saat halaman dimuat
+        startGame();
+    </script>
+
+
+</body></html>
+
